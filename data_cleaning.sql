@@ -1,3 +1,6 @@
+/*-----------------------------CLEANNING---------------------------------*/
+
+
 -- A. Delete unnecessary columns
 ALTER TABLE proyecto.accidentes
 DROP COLUMN punto_1,
@@ -190,3 +193,49 @@ SET dia =
 
 DELETE FROM proyecto.accidentes
 WHERE dia='TaxqueÃ±a' or dia='TaxqueÃ±es' or dia='S<c3>Ã©rco' or dia='SiÃ©rco' or dia='1Â° de mayo' or dia='Calz taxqueÃ±a' or dia='CoruÃ±a' or dia='Ruben leÃ±ero';
+
+
+
+
+/*-----------------------------STRUCTURE---------------------------------*/
+
+--A. Create schema por develop
+DROP SCHEMA IF EXISTS desarrollo CASCADE;
+CREATE SCHEMA IF NOT EXISTS desarrollo;
+
+--B. Create tables (3): sector, lugar, evento
+
+-- About sector
+DROP TABLE IF EXISTS desarrollo.sector;
+CREATE TABLE desarrollo.sector (
+	id BIGSERIAL PRIMARY KEY, 
+	sector CHARACTER VARYING(100) NOT NULL,
+	tipo_interseccion CHARACTER VARYING(100) NOT NULL,
+	interseccion_semaforizada CHARACTER VARYING(100) NOT NULL, 
+	clasificacion_de_la_vialidad CHARACTER VARYING(100) NOT NULL,
+	folio TEXT REFERENCES proyecto.accidentes(folio)
+);
+
+
+-- About Lugar
+DROP TABLE IF EXISTS desarrollo.lugar;
+CREATE TABLE desarrollo.lugar (
+	id BIGSERIAL PRIMARY KEY, 
+	alcaldia CHARACTER VARYING(100) NOT NULL,
+	latitud NUMERIC NOT NULL,
+	longitud NUMERIC NOT NULL, 
+	sector_id BIGINT REFERENCES desarrollo.sector(id)
+);
+
+-- About evento
+DROP TABLE IF EXISTS desarrollo.evento;
+CREATE TABLE desarrollo.evento (
+	folio TEXT REFERENCES proyecto.accidentes(folio),
+	fecha TIMESTAMP,
+	tipo_evento TEXT,
+	lugar_id BIGINT REFERENCES desarrollo.lugar(id),
+	dia TEXT, 
+	origen TEXT, 
+	personas_fallecidas INTEGER, 
+	personas_lesionadas INTEGER
+);
