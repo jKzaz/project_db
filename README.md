@@ -15,12 +15,10 @@ ejecutar el siguiente comando en una sesión de línea de comandos de Postgres.
 ```{postgresql}
 \copy
     proyecto.accidentes (fecha_evento, hora_evento, tipo_evento, fecha_captura, folio, latitud, longitud, punto_1, punto_2, colonia, alcaldia, zona_vial, sector, unidad_a_cargo, tipo_interseccion, interseccion_semaforizada, clasificacion_vialidad, sentido_circulacion, dia, prioridad, origen, unidad_medica_de_apoyo, matricula_unidad_medica, trasladado_lesionados, personas_fallecidas, personas_lesionadas)
-
     FROM 'path_to_file.csv'
     WITH (FORMAT CSV, HEADER TRUE, DELIMITER ',', ENCODING 'ISO-8859-1');
 ```
 
 ## Limpieza de datos
 
-El proceso de limpieza sigue una metodología de refresh destructiuvo, por lo que cada vez que se corra se generará desde
-cero el esquema y las tablas correspondientes. El script correspondiente es el llamado: ```data_cleaning.sql```.
+El proceso de limpieza sigue una metodología de refresh destructivo, esto quiere decir que el esquema siempre se genera de cero por siempre debe correrse el script siguiente: ```data_cleaning.sql```.
