@@ -22,3 +22,8 @@ ejecutar el siguiente comando en una sesión de línea de comandos de Postgres.
 ## Limpieza de datos
 
 El proceso de limpieza sigue una metodología de refresh destructivo, esto quiere decir que el esquema siempre se genera de cero por lo que siempre debe correrse el script siguiente: ```data_cleaning.sql```.
+
+
+## Consulta de datos
+
+Se presentan algunas consultas para saber la información más importante de la base de datos, en el siguiente script: ```data_exploration.sql```.
