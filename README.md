@@ -4,7 +4,7 @@
 
 Para este proyecto se utilizan datos proporcionados por el portal de datos
 del gobierno de México sobre hechos de tránsito. Se puede acceder a los datos en
-[link](https://datos.cdmx.gob.mx/dataset/a9afdb1b-80ed-4f6c-a34a-0200211e527e/resource/0555dd20-d921-4f76-aa8c-1a0689f48bce/download/nuevo_acumulado_hechos_de_transito_2023_12.csv).
+[link](https://datos.cdmx.gob.mx/dataset/a9afdb1b-80ed-4f6c-a34a-0200211e527e/resource/0555dd20-d921-4f76-aa8c-1a0689f48bce/download/nuevo_acumulado_hechos_de_transito_2023_12.csv) o 
 [link para descargar](https://datos.cdmx.gob.mx/dataset/a9afdb1b-80ed-4f6c-a34a-0200211e527e/resource/0555dd20-d921-4f76-aa8c-1a0689f48bce/download/nuevo_acumulado_hechos_de_transito_2023_12.csv).
 
 ## Carga inicial de datos
