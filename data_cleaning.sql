@@ -8,7 +8,8 @@ DROP COLUMN unidad_a_cargo,
 DROP COLUMN sentido_circulacion,
 DROP COLUMN prioridad,
 DROP COLUMN trasladado_lesionados,
-DROP COLUMN fecha_captura;
+DROP COLUMN fecha_captura,
+DROP COLUMN unidad_medica_de_apoyo;    
 
 -- B. Convert columns 'fecha' and 'hora_evento' into timestamp
 -- Delete rows without 'hora_evento'
@@ -70,12 +71,19 @@ ALTER TABLE proyecto.accidentes
 ALTER COLUMN personas_fallecidas TYPE INTEGER USING personas_fallecidas::INTEGER,
 ALTER COLUMN personas_lesionadas TYPE INTEGER USING personas_lesionadas::INTEGER;
 
--- Add PK restriction
-ALTER TABLE proyecto.accidentes ADD PRIMARY KEY (folio);
-
 
 -- D. Super data cleaner
--- About 'tipo_evento'
+-- About folio
+DELETE FROM proyecto.accidentes
+WHERE folio in (
+	SELECT folio FROM proyecto.accidentes
+	GROUP BY folio
+	HAVING COUNT(*) > 1
+);
+
+ALTER TABLE proyecto.accidentes ADD PRIMARY KEY (folio);
+
+-- About text columns
 UPDATE proyecto.accidentes
 SET tipo_evento = INITCAP(tipo_evento),
     alcaldia = INITCAP(alcaldia),
@@ -92,6 +100,7 @@ SET sector =
     CASE 
         WHEN sector ILIKE '%basto%' THEN 'Abastos Reforma'
         WHEN sector ILIKE '%Basto%' THEN 'Abastos Reforma'
+        WHEN sector ILIKE '%Absto%' THEN 'Abastos Reforma'
         WHEN sector ILIKE '%Taxque%' THEN 'Taxquena'
         WHEN sector ILIKE '%Coyoa%' THEN 'Coyoacan'
         WHEN sector ILIKE '%Rosa%' THEN 'Zona Rosa'
@@ -101,11 +110,48 @@ SET sector =
         WHEN sector ILIKE '%Iztapalapa%' THEN 'Iztapalapa'
         WHEN sector ILIKE '%Cuauhtemoc%' THEN 'Cuauhtemoc'
         WHEN sector ILIKE '%Iztapalapa%' THEN 'Iztapalapa'
+        WHEN sector ILIKE '%Alamo%' THEN 'Alamos'
+        WHEN sector ILIKE '%Alameda%' THEN 'Alameda Revolucion'
+        WHEN sector ILIKE '%Cuauhtemoc%' THEN 'Cuauhtemoc'
+        WHEN sector ILIKE '%Agel%' THEN 'Angel'
+        WHEN sector ILIKE '%Del Vale%' THEN 'Del Valle'
+		WHEN sector ILIKE '%Estrela%' THEN 'Estrella Torre'        
+        WHEN sector ILIKE '%Estrella%' THEN 'Estrella Torre'		
+        WHEN sector ILIKE '%Granja%' THEN 'Granjas'
+        WHEN sector ILIKE '%Grnajas%' THEN 'Granjas'
+        WHEN sector ILIKE '%Madero%' THEN 'Gustavo Madero'
+        WHEN sector ILIKE '%Huipulco%' THEN 'Huipulco'
+        WHEN sector ILIKE '%Hospitales%' THEN 'Huipulco'
+        WHEN sector ILIKE '%Iztac%' THEN 'Iztaccihuatl'
+        WHEN sector ILIKE '%Mixcalco%' THEN 'Mixcalco'
+        WHEN sector ILIKE '%ixqui%' THEN 'Mixcoac'
+        WHEN sector ILIKE '%orelos%' THEN 'Morelos'
+        WHEN sector ILIKE '%Narva%' THEN 'Narvarte Alamos'
+        WHEN sector ILIKE '%Nativitas%' THEN 'Navitas'
+        WHEN sector ILIKE '%Patitlan%' THEN 'Pantitlan'
+        WHEN sector ILIKE '%Nativitas%' THEN 'Navitas'        
+        WHEN sector ILIKE '%uxiliar%' THEN 'Policia Auxiliar'        
+        WHEN sector ILIKE '%ezal%' THEN 'Quetzal'        
+        WHEN sector ILIKE '%Revolucion/Alameda%' THEN 'Revolucion Alameda'  
+        WHEN sector ILIKE '%Cruz%' THEN 'Santa Cruz'  
+        WHEN sector ILIKE '%Sta Fe%' THEN 'Santa Fe'  
+        WHEN sector ILIKE '%Tepeya%' THEN 'Tepeyac'  
+        WHEN sector ILIKE '%Tepaya%' THEN 'Tepeyac' 
+        WHEN sector ILIKE '%Tlacotal%' THEN 'Tlacoltal' 
+        WHEN sector ILIKE '%lolco%' THEN 'Tlatelolco' 
+        WHEN sector ILIKE '%Zapoti%' THEN 'Zapotitlan'
+        WHEN sector ILIKE '%Fuente%' THEN 'Fuentes'
+        WHEN sector ILIKE '%Izaccihuatl%' THEN 'Iztaccihuatl'
+        WHEN sector ILIKE '%Izacihuatl%' THEN 'Iztaccihuatl'
+        WHEN sector ILIKE '%Iztaccihuatl%' THEN 'Iztaccihuatl'
+        WHEN sector ILIKE '%Portles%' THEN 'Portales'
+        WHEN sector ILIKE '%Cuatepec%' THEN 'Cuautepec'
+        WHEN sector ILIKE '%Cuauhtepec%' THEN 'Cuautepec'
         ELSE sector
     END;
 
 DELETE FROM proyecto.accidentes
-WHERE sector = 'M' or sector='Sd';
+WHERE sector = 'M' or sector='Sd' or sector='Crum' or sector='Pbi' or sector='C5';
 
 -- About 'interseccion_semaforizada' and 'clasificacion_vialidad'
 DELETE FROM proyecto.accidentes
@@ -142,5 +188,5 @@ SET dia =
         ELSE dia   
     END;
 
--- Aqui falta borrar los tipos de dia que sobre, rifenselo. 
--- resta unidad mediad
+DELETE FROM proyecto.accidentes
+WHERE dia='TaxqueÃ±a' or dia='TaxqueÃ±es' or dia='S<c3>Ã©rco' or dia='SiÃ©rco' or dia='1Â° de mayo' or dia='Calz taxqueÃ±a' or dia='CoruÃ±a' or dia='Ruben leÃ±ero';
